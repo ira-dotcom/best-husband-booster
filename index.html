@@ -8,125 +8,73 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 html,body{height:100%}
-body{overflow:hidden;background:#8a6a4b;font-family:'Patrick Hand',cursive;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.wood{position:fixed;inset:0;background:
- repeating-linear-gradient(90deg,rgba(0,0,0,.09) 0 3px,transparent 3px 110px),
- repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 4px,transparent 4px 160px),
- radial-gradient(circle at 30% 15%,#a5825f,#6f5236 75%)}
-.scene{position:relative;z-index:2;width:min(88vw,460px);display:flex;flex-direction:column;align-items:center}
-#pack{width:100%;border-radius:18px;box-shadow:0 24px 50px rgba(0,0,0,.45);cursor:pointer}
-.float{animation:bob 2.6s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-14px) rotate(1.5deg)}}
-.shake{animation:shake .55s ease-in-out}
-@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg) scale(1.03)}40%{transform:rotate(6deg) scale(1.05)}60%{transform:rotate(-5deg)}80%{transform:rotate(4deg)}}
-.burst{animation:burst .5s ease-out forwards}
-@keyframes burst{60%{transform:scale(1.25);opacity:1}100%{transform:scale(1.8);opacity:0}}
-.hint{margin-top:22px;color:#fff6e8;font-size:24px;letter-spacing:1px;opacity:.95;animation:pulse 1.6s ease-in-out infinite;text-shadow:0 2px 6px rgba(0,0,0,.4)}
-@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+body{overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#faf7f0,#e7e3d9);font-family:'Patrick Hand',cursive;color:#4a453d;display:flex;align-items:center;justify-content:center}
+.stage{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+#pack{width:min(78vw,420px);border-radius:16px;box-shadow:0 18px 40px rgba(90,80,60,.35);cursor:pointer;animation:bob 2.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.hint{font-size:24px;letter-spacing:1px;opacity:.85;animation:pulse 1.6s ease-in-out infinite;text-align:center}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 .hidden{display:none!important}
-#stackwrap{position:relative;width:64%}
-#stack{width:100%;display:block;filter:drop-shadow(0 14px 22px rgba(0,0,0,.45))}
-#stack::before,#stack::after{content:"";position:absolute;inset:0;border-radius:14px;background:url(assets/cardback.jpg) center/cover;z-index:-1}
-#stack::before{transform:rotate(-4deg) translate(-8px,4px)}
-#stack::after{transform:rotate(3deg) translate(8px,6px)}
-#stack{cursor:pointer;animation:bob 2.6s ease-in-out infinite}
-.cardlayer{position:fixed;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.card{position:absolute;width:min(76vw,380px);aspect-ratio:.74;perspective:1200px;pointer-events:auto;cursor:pointer}
-.inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.2,.9,.25,1.15);border-radius:16px}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;box-shadow:0 22px 44px rgba(0,0,0,.5)}
+#cardArea{display:flex;flex-direction:column;align-items:center;gap:16px}
+#card{width:min(76vw,380px);aspect-ratio:.74;perspective:1200px;cursor:pointer}
+#inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.9,.25,1.15);border-radius:16px}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;box-shadow:0 18px 36px rgba(90,80,60,.35)}
 .face img{width:100%;height:100%;object-fit:cover;display:block}
 .back{transform:rotateY(180deg)}
-.card.pop{animation:pop .7s cubic-bezier(.2,.9,.3,1.2)}
-@keyframes pop{0%{transform:translateY(46%) scale(.42) rotate(9deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
-.card.gone{animation:gone .6s ease-in forwards}
-@keyframes gone{100%{transform:translateY(-140%) rotate(-24deg);opacity:0}}
-.rare .face.front::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 48%,transparent 62%);background-size:250% 250%;animation:shine 1.8s ease-in-out infinite}
-@keyframes shine{0%{background-position:130% 0}100%{background-position:-60% 0}}
-.badge{position:absolute;top:-14px;right:-10px;background:#ff5f7e;color:#fff;font-size:19px;padding:4px 14px;border-radius:999px;transform:rotate(8deg);box-shadow:0 6px 14px rgba(0,0,0,.35);z-index:3}
-#finale{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
-#finale img{width:min(80vw,420px);border-radius:16px;box-shadow:0 24px 50px rgba(0,0,0,.5);animation:pop .8s cubic-bezier(.2,.9,.3,1.2)}
-#finale h1{color:#fff6e8;font-size:min(11vw,52px);font-weight:400;text-shadow:0 3px 10px rgba(0,0,0,.45)}
-#again{margin-top:6px;background:#fff6e8;color:#6f5236;border:none;font-family:inherit;font-size:21px;padding:9px 26px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.35)}
-.confetti{position:fixed;top:-20px;z-index:8;border-radius:2px;animation:fall linear forwards}
+#card.pop{animation:pop .6s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{0%{transform:translateY(40%) scale(.45) rotate(8deg);opacity:0}100%{transform:translateY(0) scale(1) rotate(0);opacity:1}}
+#card.gone{animation:gone .55s ease-in forwards}
+@keyframes gone{100%{transform:translateY(-130%) rotate(-20deg);opacity:0}}
+#caption{font-size:24px;letter-spacing:1px;opacity:.85;min-height:30px;text-align:center}
+.badge{position:absolute;top:12px;right:12px;background:#c0392b;color:#fff;font-size:18px;padding:4px 12px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.25);z-index:3}
+.shine::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.75) 48%,transparent 62%);animation:shine 1.8s ease-in-out infinite}
+@keyframes shine{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+#finale{display:flex;flex-direction:column;align-items:center;gap:14px}
+#wish{width:min(86vw,520px);border-radius:14px;box-shadow:0 18px 40px rgba(90,80,60,.35)}
+#again{font-family:'Patrick Hand',cursive;font-size:22px;padding:10px 22px;border-radius:999px;border:2px solid #4a453d;background:transparent;color:#4a453d;cursor:pointer}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:9;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 </style>
 </head>
 <body>
-<div class="wood"></div>
-<div class="scene">
- <img id="pack" class="float" src="assets/pack.jpg" alt="best husband booster pack">
- <div id="stackwrap" class="hidden">
-   <img id="stack" src="assets/cardback.jpg" alt="cards">
- </div>
- <div id="hint" class="hint">tap to open</div>
+<div class="stage">
+  <img id="pack" src="assets/pack.jpg" alt="best husband booster pack">
+  <div class="hint" id="hint">tap to open your pack</div>
+  <div id="cardArea" class="hidden">
+    <div id="card"><div id="inner">
+      <div class="face front"><img src="assets/cardback.jpg" alt=""></div>
+      <div class="face back"><img id="cardImg" src="assets/cardback.jpg" alt=""><div class="badge hidden" id="badge">rare pull</div></div>
+    </div></div>
+    <div id="caption">tap to flip</div>
+  </div>
+  <div id="finale" class="hidden">
+    <img id="wish" src="assets/wish.jpg" alt="happy birthday">
+    <button id="again">open another pack</button>
+  </div>
 </div>
 <script>
-var cards=[
- {src:"assets/cuddle.jpg",name:"cuddle point"},
- {src:"assets/forehead.jpg",name:"forehead kiss"},
- {src:"assets/smooch.jpg",name:"smooch",rare:true},
- {src:"assets/poop.jpg",name:"poop time"},
- {src:"assets/dishes.jpg",name:"dish pass"}
+const cards=[
+ {img:'assets/cuddle.jpg',name:'cuddle point'},
+ {img:'assets/forehead.jpg',name:'forehead kiss'},
+ {img:'assets/smooch.jpg',name:'smooch',rare:true},
+ {img:'assets/poop.jpg',name:'poop time'},
+ {img:'assets/dishes.jpg',name:'dish pass'}
 ];
-var state="pack",i=0,layer=null,current=null;
-var pack=document.getElementById("pack"),stackwrap=document.getElementById("stackwrap"),
-    stack=document.getElementById("stack"),hint=document.getElementById("hint");
-function setHint(t){hint.textContent=t}
-pack.addEventListener("click",function(){
- if(state!=="pack")return;
- state="ripping";setHint("");
- pack.classList.remove("float");pack.classList.add("shake");
- setTimeout(function(){
-  pack.classList.remove("shake");pack.classList.add("burst");
-  setTimeout(function(){
-   pack.classList.add("hidden");pack.classList.remove("burst");
-   stackwrap.classList.remove("hidden");state="stack";setHint("tap to draw a card");
-  },480);
- },560);
+let phase='pack',idx=0,flipped=false;
+const pack=document.getElementById('pack'),hint=document.getElementById('hint'),
+cardArea=document.getElementById('cardArea'),card=document.getElementById('card'),
+inner=document.getElementById('inner'),cardImg=document.getElementById('cardImg'),
+badge=document.getElementById('badge'),caption=document.getElementById('caption'),
+finale=document.getElementById('finale'),faceUp=document.querySelector('.face.back');
+function confetti(n){const cols=['#e8a3a3','#f2c94c','#7fb8d8','#b8e0a0','#e6b8d8'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%cols.length];c.style.animationDuration=(2.2+Math.random()*1.6)+'s';c.style.animationDelay=(Math.random()*0.8)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500);}}
+pack.addEventListener('click',()=>{if(phase!=='pack')return;phase='opening';pack.style.animation='shake .55s ease-in-out';setTimeout(()=>{pack.style.animation='burst .5s ease-out forwards';setTimeout(()=>{pack.classList.add('hidden');hint.classList.add('hidden');showCard();},480);},560);});
+function showCard(){phase='cards';idx=0;flipped=false;cardArea.classList.remove('hidden');inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');caption.textContent='tap to flip';card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),700);}
+function nextCard(){idx++;flipped=false;if(idx>=cards.length){cardArea.classList.add('hidden');finale.classList.remove('hidden');confetti(80);return;}inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),700);caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap to flip';}
+card.addEventListener('click',()=>{if(phase!=='cards')return;
+ if(!flipped){flipped=true;const c=cards[idx];inner.style.transform='rotateY(180deg)';setTimeout(()=>{cardImg.src=c.img;if(c.rare){badge.classList.remove('hidden');faceUp.classList.add('shine');}},380);caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap for the next one';}
+ else{card.classList.add('gone');setTimeout(nextCard,430);}
 });
-function draw(){
- if(state!=="stack"&&state!=="draw")return;
- if(current){current.classList.add("gone");var old=current;setTimeout(function(){old.remove()},620);current=null;}
- if(i<cards.length){
-  var c=cards[i++];
-  var el=document.createElement("div");el.className="card pop";
-  if(c.rare){el.classList.add("rare");var b=document.createElement("div");b.className="badge";b.textContent="rare pull";el.appendChild(b);}
-  el.innerHTML='<div class="inner"><div class="face back"><img src="assets/cardback.jpg"></div><div class="face front"><img src="'+c.src+'"></div></div>';
-  document.body.appendChild(el);
-  requestAnimationFrame(function(){requestAnimationFrame(function(){var n=el.querySelector(".inner");n.style.transform="rotateY(0deg)";el.querySelector(".inner").style.transform="rotateY(0deg)";el.querySelector(".inner").classList.add("flipped");el.querySelector(".inner").style.transform="rotateY(0deg)";el.querySelector(".inner").style.transform="rotateY(0deg)";var inner=el.querySelector(".inner");inner.style.transform="rotateY(0deg)";});});
-  var inner=el.querySelector(".inner");inner.style.transform="rotateY(180deg)";
-  setTimeout(function(){inner.style.transform="rotateY(0deg)";},40);
-  current=el;state="draw";
-  setHint(i<cards.length?"tap for the next one":"one more...");
- } else {
-  finale();
- }
-}
-function confetti(){
- var cols=["#ff5f7e","#ffd166","#7bd389","#6ab7ff","#f9a1d0","#fff6e8"];
- for(var k=0;k<70;k++){
-  var p=document.createElement("div");p.className="confetti";
-  p.style.left=(Math.random()*100)+"vw";
-  p.style.width=(6+Math.random()*8)+"px";p.style.height=(10+Math.random()*10)+"px";
-  p.style.background=cols[k%cols.length];
-  p.style.animationDuration=(2.6+Math.random()*2.4)+"s";
-  p.style.animationDelay=(Math.random()*1.8)+"s";
-  document.body.appendChild(p);
- }
-}
-function finale(){
- state="done";setHint("");
- stackwrap.classList.add("hidden");
- if(current){current.classList.add("gone");setTimeout(function(){current.remove()},600);current=null;}
- var f=document.createElement("div");f.id="finale";
- f.innerHTML='<img src="assets/wish.jpg"><h1>happy birthday</h1><button id="again">open another pack</button>';
- document.body.appendChild(f);
- confetti();
- document.getElementById("again").addEventListener("click",function(){location.reload()});
-}
-document.addEventListener("click",function(e){
- if(state==="stack"||state==="draw")draw();
-});
+document.getElementById('again').addEventListener('click',()=>location.reload());
 </script>
 </body>
 </html>
