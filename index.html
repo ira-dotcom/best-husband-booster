@@ -74,13 +74,13 @@ finale=document.getElementById('finale'),faceUp=document.querySelector('.face.ba
 function confetti(n){const cols=['#e8a3a3','#f2c94c','#7fb8d8','#b8e0a0','#e6b8d8'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%cols.length];c.style.animationDuration=(2.2+Math.random()*1.6)+'s';c.style.animationDelay=(Math.random()*0.8)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500);}}
 pack.addEventListener('click',()=>{if(phase!=='pack')return;phase='opening';pack.style.animation='shake .55s ease-in-out';setTimeout(()=>{pack.style.animation='burst .5s ease-out forwards';setTimeout(()=>{pack.classList.add('hidden');hint.classList.add('hidden');showCard();},480);},560);});
 function showCard(){phase='cards';idx=0;flipped=false;cardArea.classList.remove('hidden');inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');caption.textContent='tap to flip';card.classList.add('pop');}
-function nextCard(){idx++;flipped=false;if(idx>=cards.length){cardArea.classList.add('hidden');finale.classList.remove('hidden');confetti(80);return;}inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');card.classList.add('pop');caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap to flip';}
+function nextCard(){idx++;flipped=false;card.classList.remove('gone');if(idx>=cards.length){cardArea.classList.add('hidden');finale.classList.remove('hidden');confetti(80);return;}inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');card.classList.add('pop');caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap to flip';}
 card.addEventListener('click',()=>{if(phase!=='cards')return;
  if(!flipped){flipped=true;const c=cards[idx];inner.style.transform='rotateY(180deg)';setTimeout(()=>{cardImg.src=c.img;if(c.rare){badge.classList.remove('hidden');faceUp.classList.add('shine');}},380);caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap for the next one';}
  else{card.classList.add('gone');}
 });
 document.getElementById('again').addEventListener('click',()=>location.reload());
-card.addEventListener('animationend',e=>{if(e.animationName==='pop')card.classList.remove('pop');if(e.animationName==='gone')nextCard();});
+card.addEventListener('animationend',e=>{if(e.animationName==='pop')card.classList.remove('pop');if(e.animationName==='gone'){card.classList.remove('gone');nextCard();}});
 cards.forEach(c=>{const i=new Image();i.src=c.img;});new Image().src='assets/cardback.jpg';
 </script>
 </body>
