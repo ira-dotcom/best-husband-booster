@@ -18,11 +18,11 @@ body{overflow:hidden;background:radial-gradient(120% 120% at 50% 0%,#faf7f0,#e7e
 #cardArea{display:flex;flex-direction:column;align-items:center;gap:16px}
 #card{width:min(76vw,380px);aspect-ratio:.74;perspective:1200px;cursor:pointer}
 #inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.9,.25,1.15);border-radius:16px}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;box-shadow:0 18px 36px rgba(90,80,60,.35)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;overflow:hidden;box-shadow:0 18px 36px rgba(90,80,60,.35);background:#f3efe6}
 .face img{width:100%;height:100%;object-fit:cover;display:block}
 .back{transform:rotateY(180deg)}
 #card.pop{animation:pop .6s cubic-bezier(.2,.9,.3,1.2)}
-@keyframes pop{0%{transform:translateY(40%) scale(.45) rotate(8deg);opacity:0}100%{transform:translateY(0) scale(1) rotate(0);opacity:1}}
+@keyframes pop{0%{transform:translateY(40%) scale(.45) rotate(8deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
 #card.gone{animation:gone .55s ease-in forwards}
 @keyframes gone{100%{transform:translateY(-130%) rotate(-20deg);opacity:0}}
 #caption{font-size:24px;letter-spacing:1px;opacity:.85;min-height:30px;text-align:center}
@@ -68,13 +68,15 @@ badge=document.getElementById('badge'),caption=document.getElementById('caption'
 finale=document.getElementById('finale'),faceUp=document.querySelector('.face.back');
 function confetti(n){const cols=['#e8a3a3','#f2c94c','#7fb8d8','#b8e0a0','#e6b8d8'];for(let i=0;i<n;i++){const c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%cols.length];c.style.animationDuration=(2.2+Math.random()*1.6)+'s';c.style.animationDelay=(Math.random()*0.8)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4500);}}
 pack.addEventListener('click',()=>{if(phase!=='pack')return;phase='opening';pack.style.animation='shake .55s ease-in-out';setTimeout(()=>{pack.style.animation='burst .5s ease-out forwards';setTimeout(()=>{pack.classList.add('hidden');hint.classList.add('hidden');showCard();},480);},560);});
-function showCard(){phase='cards';idx=0;flipped=false;cardArea.classList.remove('hidden');inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');caption.textContent='tap to flip';card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),700);}
-function nextCard(){idx++;flipped=false;if(idx>=cards.length){cardArea.classList.add('hidden');finale.classList.remove('hidden');confetti(80);return;}inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');card.classList.add('pop');setTimeout(()=>card.classList.remove('pop'),700);caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap to flip';}
+function showCard(){phase='cards';idx=0;flipped=false;cardArea.classList.remove('hidden');inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');caption.textContent='tap to flip';card.classList.add('pop');}
+function nextCard(){idx++;flipped=false;if(idx>=cards.length){cardArea.classList.add('hidden');finale.classList.remove('hidden');confetti(80);return;}inner.style.transform='rotateY(0)';cardImg.src='assets/cardback.jpg';badge.classList.add('hidden');faceUp.classList.remove('shine');card.classList.add('pop');caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap to flip';}
 card.addEventListener('click',()=>{if(phase!=='cards')return;
  if(!flipped){flipped=true;const c=cards[idx];inner.style.transform='rotateY(180deg)';setTimeout(()=>{cardImg.src=c.img;if(c.rare){badge.classList.remove('hidden');faceUp.classList.add('shine');}},380);caption.textContent=(idx===cards.length-1)?'one more\u2026':'tap for the next one';}
- else{card.classList.add('gone');setTimeout(nextCard,430);}
+ else{card.classList.add('gone');}
 });
 document.getElementById('again').addEventListener('click',()=>location.reload());
+card.addEventListener('animationend',e=>{if(e.animationName==='pop')card.classList.remove('pop');if(e.animationName==='gone')nextCard();});
+cards.forEach(c=>{const i=new Image();i.src=c.img;});new Image().src='assets/cardback.jpg';
 </script>
 </body>
 </html>
